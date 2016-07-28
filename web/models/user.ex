@@ -5,6 +5,8 @@ defmodule LeaderboardGolf.User do
     field :email, :string
     field :name, :string
 
+    has_many :players, LeaderboardGolf.Player
+
     timestamps()
   end
 

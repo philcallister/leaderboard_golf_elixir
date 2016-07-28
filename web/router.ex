@@ -14,6 +14,7 @@ defmodule LeaderboardGolf.Router do
       resources "/rounds", RoundController, only: [:index]
     end
     resources "/rounds", RoundController, except: [:new, :edit, :index]
+    resources "/players", PlayerController, except: [:new, :edit]
   end
 
 end

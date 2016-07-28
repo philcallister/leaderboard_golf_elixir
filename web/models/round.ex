@@ -3,7 +3,9 @@ defmodule LeaderboardGolf.Round do
 
   schema "rounds" do
     field :number, :integer
+
     belongs_to :tournament, LeaderboardGolf.Tournament
+    has_many   :players, LeaderboardGolf.Player
 
     timestamps()
   end
@@ -14,7 +16,7 @@ defmodule LeaderboardGolf.Round do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:number, :tournament_id])
-    |> validate_required([:number])
+    |> validate_required([:number, :tournament_id])
     |> assoc_constraint(:tournament)
   end
 end

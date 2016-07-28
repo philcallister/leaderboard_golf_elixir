@@ -31,10 +31,11 @@ defmodule LeaderboardGolf.RoundControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    Repo.insert! %Tournament{}
-    conn = post conn, round_path(conn, :create), round: @valid_attrs
+    tournament = Repo.insert! %Tournament{}
+    round = Map.merge(@valid_attrs, %{:tournament_id => tournament.id})
+    conn = post conn, round_path(conn, :create), round: round
     assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Round, @valid_attrs)
+    assert Repo.get_by(Round, round)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -44,7 +45,7 @@ defmodule LeaderboardGolf.RoundControllerTest do
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     tournament = Repo.insert! %Tournament{}
-    round = Repo.insert! %Round{tournament_id: tournament.id}
+    round = Repo.insert! %Round{:tournament_id => tournament.id}
     conn = put conn, round_path(conn, :update, round), round: @valid_attrs
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Round, @valid_attrs)
