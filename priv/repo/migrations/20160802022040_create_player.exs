@@ -3,12 +3,12 @@ defmodule LeaderboardGolf.Repo.Migrations.CreatePlayer do
 
   def change do
     create table(:players) do
-      add :round_id, references(:rounds, on_delete: :nothing)
+      add :tournament_id, references(:tournaments, on_delete: :nothing)
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
     end
-    create index(:players, [:round_id])
+    create index(:players, [:tournament_id])
     create index(:players, [:user_id])
 
   end

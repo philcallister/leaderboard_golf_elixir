@@ -3,8 +3,9 @@ defmodule LeaderboardGolf.PlayerControllerTest do
 
   alias LeaderboardGolf.Player
   alias LeaderboardGolf.User
-  alias LeaderboardGolf.Round
+  alias LeaderboardGolf.Tournament
 
+  @valid_attrs %{}
   @invalid_attrs %{}
 
   setup %{conn: conn} do
@@ -20,7 +21,7 @@ defmodule LeaderboardGolf.PlayerControllerTest do
     player = Repo.insert! %Player{}
     conn = get conn, player_path(conn, :show, player)
     assert json_response(conn, 200)["data"] == %{"id" => player.id,
-      "round_id" => player.round_id,
+      "tournament_id" => player.tournament_id,
       "user_id" => player.user_id}
   end
 
@@ -31,16 +32,27 @@ defmodule LeaderboardGolf.PlayerControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
+    tournament = Repo.insert! %Tournament{}
     user = Repo.insert! %User{}
-    round = Repo.insert! %Round{}
-    conn = post conn, player_path(conn, :create), player: %{:user_id => user.id, :round_id => round.id}
+    player = Map.merge(@valid_attrs, %{:user_id => user.id, :tournament_id => tournament.id})
+    conn = post conn, player_path(conn, :create), player: player
     assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Player, %{:user_id => user.id, :round_id => round.id})
+    assert Repo.get_by(Player, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, player_path(conn, :create), player: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
+  end
+
+  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+
+    tournament = Repo.insert! %Tournament{}
+    user = Repo.insert! %User{}
+    player = Repo.insert! %Player{:user_id => user.id, :tournament_id => tournament.id}
+    conn = put conn, player_path(conn, :update, player), player: @valid_attrs
+    assert json_response(conn, 200)["data"]["id"]
+    assert Repo.get_by(Player, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

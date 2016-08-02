@@ -2,8 +2,8 @@ defmodule LeaderboardGolf.Player do
   use LeaderboardGolf.Web, :model
 
   schema "players" do
-    belongs_to :round, LeaderboardGolf.Round
     belongs_to :user, LeaderboardGolf.User
+    belongs_to :tournament, LeaderboardGolf.Tournament
 
     timestamps()
   end
@@ -13,10 +13,9 @@ defmodule LeaderboardGolf.Player do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:round_id, :user_id])
-    |> validate_required([:round_id, :user_id])
-    |> assoc_constraint(:round)
+    |> cast(params, [:user_id, :tournament_id])
+    |> validate_required([:user_id, :tournament_id])
     |> assoc_constraint(:user)
-
+    |> assoc_constraint(:tournament)
   end
 end

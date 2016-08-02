@@ -3,16 +3,16 @@ defmodule LeaderboardGolf.PlayerTest do
 
   alias LeaderboardGolf.Player
   alias LeaderboardGolf.User
-  alias LeaderboardGolf.Round
+  alias LeaderboardGolf.Tournament
 
   @valid_attrs %{}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    user = Repo.insert! %User{}
-    round = Repo.insert! %Round{}
-    player = %{:user_id => user.id, :round_id => round.id}
 
+    tournament = Repo.insert! %Tournament{}
+    user = Repo.insert! %User{}
+    player = Map.merge(@valid_attrs, %{:tournament_id => tournament.id, :user_id => user.id})
     changeset = Player.changeset(%Player{}, player)
     assert changeset.valid?
   end

@@ -11,7 +11,7 @@ defmodule LeaderboardGolf.PlayerView do
 
   def render("player.json", %{player: player}) do
     %{id: player.id,
-      round_id: player.round_id,
+      tournament_id: player.tournament_id,
       user_id: player.user_id}
   end
 end

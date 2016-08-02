@@ -5,7 +5,6 @@ defmodule LeaderboardGolf.Round do
     field :number, :integer
 
     belongs_to :tournament, LeaderboardGolf.Tournament
-    has_many   :players, LeaderboardGolf.Player
 
     timestamps()
   end

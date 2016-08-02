@@ -4,7 +4,8 @@ defmodule LeaderboardGolf.Tournament do
   schema "tournaments" do
     field :name, :string
     field :description, :string
-    has_many :rounds, LeaderboardGolf.Tournament
+    has_many :rounds, LeaderboardGolf.Round
+    has_many :players, LeaderboardGolf.Player
 
     timestamps()
   end
