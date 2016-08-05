@@ -9,12 +9,20 @@ defmodule LeaderboardGolf.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
-    resources "/tournaments", TournamentController, except: [:new, :edit]
+    resources "/tournaments", TournamentController, except: [:new, :edit, :index]
     resources "/tournaments", TournamentController do
       resources "/rounds", RoundController, only: [:index]
+      resources "/players", PlayerController, only: [:index]
+      resources "/courses", CourseController, only: [:index]
     end
-    resources "/rounds", RoundController, except: [:new, :edit, :index]
-    resources "/players", PlayerController, except: [:new, :edit]
+    resources "/courses", CourseController, except: [:new, :edit, :index]
+    resources "/rounds", RoundController, except: [:new, :edit, :index] do
+      resources "/cards", CardController, only: [:index]
+    end
+    resources "/players", PlayerController, except: [:new, :edit, :index] do
+      resources "/cards", CardController, only: [:index]
+    end
+    resources "/cards", CardController, except: [:new, :edit, :index]
   end
 
 end

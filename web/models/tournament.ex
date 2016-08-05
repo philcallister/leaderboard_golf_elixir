@@ -4,6 +4,8 @@ defmodule LeaderboardGolf.Tournament do
   schema "tournaments" do
     field :name, :string
     field :description, :string
+
+    has_many :courses, LeaderboardGolf.Course
     has_many :rounds, LeaderboardGolf.Round
     has_many :players, LeaderboardGolf.Player
 

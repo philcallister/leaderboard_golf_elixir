@@ -9,7 +9,6 @@ defmodule LeaderboardGolf.PlayerTest do
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-
     tournament = Repo.insert! %Tournament{}
     user = Repo.insert! %User{}
     player = Map.merge(@valid_attrs, %{:tournament_id => tournament.id, :user_id => user.id})

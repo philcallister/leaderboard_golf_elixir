@@ -1,22 +1,22 @@
-defmodule LeaderboardGolf.PlayerController do
+defmodule LeaderboardGolf.CourseController do
   use LeaderboardGolf.Web, :controller
 
-  alias LeaderboardGolf.Player
+  alias LeaderboardGolf.Course
 
   def index(conn, %{"tournament_id" => tournament_id}) do
-    players = Repo.all(from p in Player, where: p.tournament_id == ^tournament_id)
-    render(conn, "index.json", players: players)
+    courses = Repo.all(from c in Course, where: c.tournament_id == ^tournament_id)
+    render(conn, "index.json", courses: courses)
   end
 
-  def create(conn, %{"player" => player_params}) do
-    changeset = Player.changeset(%Player{}, player_params)
+  def create(conn, %{"course" => course_params}) do
+    changeset = Course.changeset(%Course{}, course_params)
 
     case Repo.insert(changeset) do
-      {:ok, player} ->
+      {:ok, course} ->
         conn
         |> put_status(:created)
-        |> put_resp_header("location", player_path(conn, :show, player))
-        |> render("show.json", player: player)
+        |> put_resp_header("location", course_path(conn, :show, course))
+        |> render("show.json", course: course)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -25,17 +25,17 @@ defmodule LeaderboardGolf.PlayerController do
   end
 
   def show(conn, %{"id" => id}) do
-    player = Repo.get!(Player, id)
-    render(conn, "show.json", player: player)
+    course = Repo.get!(Course, id)
+    render(conn, "show.json", course: course)
   end
 
-  def update(conn, %{"id" => id, "player" => player_params}) do
-    player = Repo.get!(Player, id)
-    changeset = Player.changeset(player, player_params)
+  def update(conn, %{"id" => id, "course" => course_params}) do
+    course = Repo.get!(Course, id)
+    changeset = Course.changeset(course, course_params)
 
     case Repo.update(changeset) do
-      {:ok, player} ->
-        render(conn, "show.json", player: player)
+      {:ok, course} ->
+        render(conn, "show.json", course: course)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -44,11 +44,11 @@ defmodule LeaderboardGolf.PlayerController do
   end
 
   def delete(conn, %{"id" => id}) do
-    player = Repo.get!(Player, id)
+    course = Repo.get!(Course, id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(player)
+    Repo.delete!(course)
 
     send_resp(conn, :no_content, "")
   end
