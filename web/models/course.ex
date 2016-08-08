@@ -3,6 +3,7 @@ defmodule LeaderboardGolf.Course do
 
   schema "courses" do
     belongs_to :tournament, LeaderboardGolf.Tournament
+    has_many :holes, LeaderboardGolf.Hole
 
     timestamps()
   end

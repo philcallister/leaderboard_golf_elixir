@@ -4,6 +4,7 @@ defmodule LeaderboardGolf.Player do
   schema "players" do
     belongs_to :user, LeaderboardGolf.User
     belongs_to :tournament, LeaderboardGolf.Tournament
+    has_many :cards, LeaderboardGolf.Card
 
     timestamps()
   end
