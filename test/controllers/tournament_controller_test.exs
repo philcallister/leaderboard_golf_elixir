@@ -11,13 +11,13 @@ defmodule LeaderboardGolf.TournamentControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, tournament_path(conn, :index)
-    assert json_response(conn, 200)["data"] == []
+    assert json_response(conn, 200)["tournaments"] == []
   end
 
   test "shows chosen resource", %{conn: conn} do
     tournament = Repo.insert! %Tournament{}
     conn = get conn, tournament_path(conn, :show, tournament)
-    assert json_response(conn, 200)["data"] == %{"id" => tournament.id,
+    assert json_response(conn, 200)["tournament"] == %{"id" => tournament.id,
       "name" => tournament.name,
       "description" => tournament.description}
   end
@@ -28,25 +28,25 @@ defmodule LeaderboardGolf.TournamentControllerTest do
     end
   end
 
-  test "creates and renders resource when data is valid", %{conn: conn} do
+  test "creates and renders resource when tournament is valid", %{conn: conn} do
     conn = post conn, tournament_path(conn, :create), tournament: @valid_attrs
-    assert json_response(conn, 201)["data"]["id"]
+    assert json_response(conn, 201)["tournament"]["id"]
     assert Repo.get_by(Tournament, @valid_attrs)
   end
 
-  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+  test "does not create resource and renders errors when tournament is invalid", %{conn: conn} do
     conn = post conn, tournament_path(conn, :create), tournament: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "updates and renders chosen resource when data is valid", %{conn: conn} do
+  test "updates and renders chosen resource when tournament is valid", %{conn: conn} do
     tournament = Repo.insert! %Tournament{}
     conn = put conn, tournament_path(conn, :update, tournament), tournament: @valid_attrs
-    assert json_response(conn, 200)["data"]["id"]
+    assert json_response(conn, 200)["tournament"]["id"]
     assert Repo.get_by(Tournament, @valid_attrs)
   end
 
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
+  test "does not update chosen resource and renders errors when tournament is invalid", %{conn: conn} do
     tournament = Repo.insert! %Tournament{}
     conn = put conn, tournament_path(conn, :update, tournament), tournament: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
